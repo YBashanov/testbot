@@ -1,7 +1,10 @@
 services:
-  - type: web
-    name: telegram-bot
+  - type: worker
+    name: testbot
     env: python
-    buildCommand: "pip install -r requirements.txt"
-    startCommand: "python bot.py"
-    pythonVersion: 3.10
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python bot.py
+    envVars:
+      - key: BOT_TOKEN
+        sync: false
