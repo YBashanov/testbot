@@ -1,14 +1,15 @@
 from telegram import Update
-from telegram.ext import Updater, CommandHandler, CallbackContext
+from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 import os
 
 TOKEN = os.getenv("BOT_TOKEN")
 
-def start(update: Update, context: CallbackContext):
-    update.message.reply_text("Привет! Я полезный бот. Напиши /help для списка команд.")
+# Асинхронные функции — теперь обязательны
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("Привет! Я полезный бот. Напиши /help для списка команд.")
 
-def help_command(update: Update, context: CallbackContext):
-    update.message.reply_text(
+async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text(
         "/start - начать\n"
         "/help - помощь\n"
         "/add_note - добавить заметку\n"
@@ -18,14 +19,12 @@ def help_command(update: Update, context: CallbackContext):
     )
 
 def main():
-    updater = Updater(TOKEN)
-    dp = updater.dispatcher
+    app = ApplicationBuilder().token(TOKEN).build()
 
-    dp.add_handler(CommandHandler("start", start))
-    dp.add_handler(CommandHandler("help", help_command))
+    app.add_handler(CommandHandler("start", start))
+    app.add_handler(CommandHandler("help", help_command))
 
-    updater.start_polling()
-    updater.idle()
+    app.run_polling()
 
 if __name__ == '__main__':
     main()
