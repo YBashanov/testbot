@@ -1,7 +1,8 @@
 from telegram import Update
 from telegram.ext import Updater, CommandHandler, CallbackContext
+import os
 
-TOKEN = '8312758635:AAEZwqaa_3ubc9AK7XqMTtcQgnZxEoxlbn0'
+TOKEN = os.getenv("BOT_TOKEN")
 
 def start(update: Update, context: CallbackContext):
     update.message.reply_text("Привет! Я полезный бот. Напиши /help для списка команд.")
